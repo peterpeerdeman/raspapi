@@ -1,4 +1,3 @@
-var fs = require('fs');
 var express = require('express');
 var router = express.Router();
 
@@ -47,7 +46,6 @@ router.get('/', function (req, res) {
                 if (err) {
                     throw err;
                 }
-                var raspberrypi = fs.readFileSync('./raspberry-pi.out', 'utf8');
                 parser.parse(stdout.toString(), 6, function(err, result) {
                     if (err) {
                         throw err;
