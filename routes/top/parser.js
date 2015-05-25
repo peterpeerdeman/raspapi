@@ -55,7 +55,7 @@ function parseDarwin(current, keys) {
     return inner; 
 }
 
-function parseUnix(current, inner) {
+function parseUnix(current, keys) {
     var vals = current.trim().split(/\s+/);
     var inner = {};
 
@@ -64,9 +64,9 @@ function parseUnix(current, inner) {
             continue;
         }
         
-        if(ii == 11) { 
-            inner[keys[ii]] = vals.slice(11,vals.length).join(" ");
-            ii == vals.length;
+        if(ii === 11) { 
+            inner[keys[ii]] = vals.slice(11,vals.length).join(' ');
+            ii = vals.length;
         } else {
             inner[keys[ii]] = vals[ii];
         }
