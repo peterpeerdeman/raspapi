@@ -1,0 +1,27 @@
+{
+  "name": "raspapi",
+  "version": "1.0.0",
+  "description": "An REST API for our Raspberry Pi",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "express": "^4.12.4",
+    "topson": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/peterpeerdeman/raspapi"
+  },
+  "author": "Peter Peerdeman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/peterpeerdeman/raspapi/issues"
+  },
+  "homepage": "https://github.com/peterpeerdeman/raspapi"
+}
