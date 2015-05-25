@@ -47,8 +47,8 @@ router.get('/', function (req, res) {
                 if (err) {
                     throw err;
                 }
-
-                parser.parse(stdout.toString(), 11, function(err, result) {
+                var raspberrypi = fs.readFileSync('./raspberry-pi.out', 'utf8');
+                parser.parse(stdout.toString(), 6, function(err, result) {
                     if (err) {
                         throw err;
                     }
