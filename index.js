@@ -3,9 +3,11 @@ var app = express();
 
 var top = require('./routes/top');
 var mpd = require('./routes/mpd');
+var weather = require('./routes/weather');
 
 app.use('/api/top', top);
 app.use('/api/mpd', mpd);
+app.use('/api/weather', weather);
 
 app.use(error);
 
