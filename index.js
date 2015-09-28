@@ -4,10 +4,12 @@ var app = express();
 var top = require('./routes/top');
 var mpd = require('./routes/mpd');
 var weather = require('./routes/weather');
+var lights = require('./routes/lights');
 
 app.use('/api/top', top);
 app.use('/api/mpd', mpd);
 app.use('/api/weather', weather);
+app.use('/api/lights', lights);
 
 app.use(error);
 
@@ -17,14 +19,14 @@ app.use(error);
 // middleware, you may have several of them,
 // in different orders etc.
 function error(err, req, res, next) {
-  // log it
-  console.error(err.stack);
+    // log it
+    console.error(err.stack);
 
-  // respond with 500 "Internal Server Error".
-  res.send(500);
+    // respond with 500 "Internal Server Error".
+    res.send(500);
 }
 
-var server = app.listen(3000, function () {
+var server = app.listen(3000, function() {
 
     var host = server.address().address;
     var port = server.address().port;
