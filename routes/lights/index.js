@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var hue = require('node-hue-api');
+var q = require('q');
 var HueApi = hue.HueApi;
 
 var hostname = '192.168.117.28';
@@ -18,6 +19,24 @@ router.get('/lights', function(req, res) {
     api.lights(function(err, lights) {
         if (err) throw err;
         res.send(lights);
+    });
+});
+
+router.get('/lights/details', function(req, res) {
+    api.lights(function(err, result) {
+        if (err) throw err;
+        var promises = [];
+        result.lights.forEach(function(light) {
+            promises.push(api.lightStatus(light.id));
+        });
+        q.all(promises)
+        .then(function(result) {
+            var data = [];
+            res.send(result);
+        }, 
+        function() {
+            res.sendStatus(500);
+        });
     });
 });
 
@@ -52,7 +71,7 @@ router.get('/on', function(req, res) {
             res.send(result);
         })
         .fail(function(error) {
-            res.send(result);
+            res.send(error);
         })
         .done();
 });
@@ -62,7 +81,9 @@ router.get('/off', function(req, res) {
         .then(function(result) {
             res.send(result);
         })
-        .fail(displayError)
+        .fail(function(error) {
+            res.send(error);
+        })
         .done();
 });
 
