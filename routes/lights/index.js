@@ -6,7 +6,7 @@ var HueApi = hue.HueApi;
 var lightState = hue.lightState;
 
 var hostname = '192.168.117.28';
-var username = '';
+var username = '120e0f4639d30f441d7b6b923e8a073f';
 var api = new HueApi(hostname, username);
 
 router.get('/bridges', function(req, res) {
@@ -78,6 +78,26 @@ router.get('/lights/:id/random', function(req, res) {
             Math.random()
         ],
     })
+        .then(function(result) {
+            res.send(result);
+        })
+        .fail(function(error) {
+            res.send(error);
+        })
+        .done();
+});
+
+router.get('/lights/:id/set', function(req, res) {
+    api.lightStatus(req.params.id)
+        .then(function(result) {
+            var state = lightState.create(result);
+            state.rgb([
+                req.query.r,
+                req.query.g,
+                req.query.b
+            ])
+            return api.setLightState(req.params.id, state);
+        })
         .then(function(result) {
             res.send(result);
         })
@@ -203,4 +223,15 @@ router.get('/randomcolors', function(req, res) {
     });
 });
 
+router.get('/colorloop', function(req, res) {
+    var state = lightState.create().colorLoop();
+    api.setGroupLightState(0, state)
+        .then(function(result) {
+            res.send(result);
+        })
+        .fail(function(error) {
+            res.send(error);
+        })
+        .done();
+});
 module.exports = router;
