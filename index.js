@@ -5,11 +5,13 @@ var top = require('./routes/top');
 var mpd = require('./routes/mpd');
 var weather = require('./routes/weather');
 var lights = require('./routes/lights');
+var solar = require('./routes/solar');
 
 app.use('/api/top', top);
 app.use('/api/mpd', mpd);
 app.use('/api/weather', weather);
 app.use('/api/lights', lights);
+app.use('/api/solar', solar);
 
 app.use(error);
 

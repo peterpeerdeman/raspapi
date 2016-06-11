@@ -11,7 +11,7 @@ function connect() {
     });
 }
 
-router.get('/currentsong', function (req, res) {
+router.get('/currentsong', function(req, res) {
     var client = connect();
     client.on('ready', function() {
         client.sendCommand(cmd('currentsong', []), function(err, msg) {
@@ -24,7 +24,7 @@ router.get('/currentsong', function (req, res) {
                 var statuslineArray = statusline.split(': ');
                 var key = statuslineArray[0];
                 var value = statuslineArray[1];
-                result[key] = value
+                result[key] = value;
             });
 
             res.send(result);
@@ -32,7 +32,7 @@ router.get('/currentsong', function (req, res) {
     });
 });
 
-router.get('/status', function (req, res) {
+router.get('/status', function(req, res) {
     var client = connect();
     client.on('ready', function() {
         client.sendCommand(cmd('status', []), function(err, msg) {
@@ -43,7 +43,7 @@ router.get('/status', function (req, res) {
                 var statuslineArray = statusline.split(': ');
                 var key = statuslineArray[0];
                 var value = statuslineArray[1];
-                result[key] = value
+                result[key] = value;
             });
 
             res.send(result);
@@ -51,17 +51,17 @@ router.get('/status', function (req, res) {
     });
 });
 
-router.post('/stop', function (req, res) {
+router.post('/stop', function(req, res) {
     var client = connect();
     client.on('ready', function() {
-        client.sendCommand(cmd("stop", []), function(err, msg) {
+        client.sendCommand(cmd('stop', []), function(err, msg) {
             if (err) throw err;
             res.sendStatus(200);
         });
     });
 });
 
-router.post('/next', function (req, res) {
+router.post('/next', function(req, res) {
     var client = connect();
     client.on('ready', function() {
         client.sendCommand(cmd('next', []), function(err, msg) {
@@ -71,7 +71,7 @@ router.post('/next', function (req, res) {
     });
 });
 
-router.post('/play', function (req, res) {
+router.post('/play', function(req, res) {
     var client = connect();
     client.on('ready', function() {
         client.sendCommand(cmd('play', []), function(err, msg) {
