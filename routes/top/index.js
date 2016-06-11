@@ -4,7 +4,7 @@ var router = express.Router();
 var parser = require('./parser');
 var proc   = require('child_process');
 
-router.get('/', function (req, res) {
+router.get('/', function(req, res) {
     var command = '';
     var limit = Math.min(req.query.limit, 10) || 10;
 
@@ -13,7 +13,7 @@ router.get('/', function (req, res) {
             //2 samples have to be taken, first one doesnt have CPU values
             command = 'top -u -l 2';
 
-            proc.exec(command, function (err, stdout) {
+            proc.exec(command, function(err, stdout) {
 
                 if (err) {
                     return done(err);
@@ -21,7 +21,7 @@ router.get('/', function (req, res) {
 
                 var bothSamples = stdout.toString();
                 var samplesArray = bothSamples.split(/Processes:/);
-                var secondSample = "Processes:" + samplesArray[2];
+                var secondSample = 'Processes:' + samplesArray[2];
 
                 parser.parse(secondSample, 11, function(err, result) {
 
@@ -31,18 +31,18 @@ router.get('/', function (req, res) {
 
                     var topJson = JSON.parse(result);
 
-                    var sorted = topJson.sort(function(a,b) {
+                    var sorted = topJson.sort(function(a, b) {
                         return parseFloat(b['%CPU']) - parseFloat(a['%CPU']);
                     });
 
-                    res.send(sorted.slice(0,limit));
+                    res.send(sorted.slice(0, limit));
                 });
             });
             break;
 
         case 'linux':
             command = 'top -bn 1';
-            proc.exec(command, function (err, stdout) {
+            proc.exec(command, function(err, stdout) {
                 if (err) {
                     throw err;
                 }
@@ -53,11 +53,11 @@ router.get('/', function (req, res) {
 
                     var topJson = JSON.parse(result);
 
-                    var sorted = topJson.sort(function(a,b) {
+                    var sorted = topJson.sort(function(a, b) {
                         return parseFloat(b['%CPU']) - parseFloat(a['%CPU']);
                     });
 
-                    res.send(sorted.slice(0,limit));
+                    res.send(sorted.slice(0, limit));
                 });
             });
 

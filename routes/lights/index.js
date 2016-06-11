@@ -95,7 +95,7 @@ router.get('/lights/:id/set', function(req, res) {
                 req.query.r,
                 req.query.g,
                 req.query.b
-            ])
+            ]);
             return api.setLightState(req.params.id, state);
         })
         .then(function(result) {
