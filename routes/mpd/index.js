@@ -71,6 +71,16 @@ router.post('/next', function(req, res) {
     });
 });
 
+router.post('/pause', function(req, res) {
+    var client = connect();
+    client.on('ready', function() {
+        client.sendCommand(cmd('pause', []), function(err, msg) {
+            if (err) throw err;
+            res.sendStatus(200);
+        });
+    });
+});
+
 router.post('/play', function(req, res) {
     var client = connect();
     client.on('ready', function() {
