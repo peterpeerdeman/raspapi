@@ -32,6 +32,39 @@ router.get('/currentsong', function(req, res) {
     });
 });
 
+router.get('/playlists', function(req, res) {
+    var client = connect();
+    client.on('ready', function() {
+        client.sendCommand(cmd('listplaylists', []), function(err, msg) {
+            if (err) throw err;
+            var result = [];
+            var lines = msg.split('\n');
+
+            lines.forEach(function(statusline) {
+                var statuslineArray = statusline.split(': ');
+                var key = statuslineArray[0];
+                var value = statuslineArray[1];
+                if (key == 'playlist') {
+                    result.push(value);
+                }
+            });
+
+            res.send(result);
+        });
+    });
+});
+
+
+router.post('/playlists/:playlistname/load', function(req, res) {
+    var client = connect();
+    client.on('ready', function() {
+        client.sendCommand(cmd('load', [req.params.playlistname]), function(err, msg) {
+            if (err) throw err;
+            res.sendStatus(200);
+        });
+    });
+});
+
 router.get('/status', function(req, res) {
     var client = connect();
     client.on('ready', function() {
@@ -75,6 +108,16 @@ router.post('/pause', function(req, res) {
     var client = connect();
     client.on('ready', function() {
         client.sendCommand(cmd('pause', []), function(err, msg) {
+            if (err) throw err;
+            res.sendStatus(200);
+        });
+    });
+});
+
+router.post('/clear', function(req, res) {
+    var client = connect();
+    client.on('ready', function() {
+        client.sendCommand(cmd('clear', []), function(err, msg) {
             if (err) throw err;
             res.sendStatus(200);
         });
