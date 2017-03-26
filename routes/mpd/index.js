@@ -60,7 +60,7 @@ router.post('/playlists/:playlistname/load', function(req, res) {
     client.on('ready', function() {
         client.sendCommand(cmd('load', [req.params.playlistname]), function(err, msg) {
             if (err) throw err;
-            res.sendStatus(200);
+            res.status(200).json({status: 'ok'});
         });
     });
 });
@@ -89,7 +89,7 @@ router.post('/stop', function(req, res) {
     client.on('ready', function() {
         client.sendCommand(cmd('stop', []), function(err, msg) {
             if (err) throw err;
-            res.sendStatus(200);
+            res.status(200).json({status: 'ok'});
         });
     });
 });
@@ -99,7 +99,7 @@ router.post('/next', function(req, res) {
     client.on('ready', function() {
         client.sendCommand(cmd('next', []), function(err, msg) {
             if (err) throw err;
-            res.sendStatus(200);
+            res.status(200).json({status: 'ok'});
         });
     });
 });
@@ -109,7 +109,7 @@ router.post('/pause', function(req, res) {
     client.on('ready', function() {
         client.sendCommand(cmd('pause', []), function(err, msg) {
             if (err) throw err;
-            res.sendStatus(200);
+            res.status(200).json({status: 'ok'});
         });
     });
 });
@@ -119,7 +119,7 @@ router.post('/clear', function(req, res) {
     client.on('ready', function() {
         client.sendCommand(cmd('clear', []), function(err, msg) {
             if (err) throw err;
-            res.sendStatus(200);
+            res.status(200).json({status: 'ok'});
         });
     });
 });
@@ -129,7 +129,7 @@ router.post('/play', function(req, res) {
     client.on('ready', function() {
         client.sendCommand(cmd('play', []), function(err, msg) {
             if (err) throw err;
-            res.sendStatus(200);
+            res.status(200).json({status: 'ok'});
         });
     });
 });
