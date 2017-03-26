@@ -5,7 +5,7 @@ var q = require('q');
 var HueApi = hue.HueApi;
 var lightState = hue.lightState;
 
-var hostname = '192.168.117.28';
+var hostname = '192.168.117.4';
 var username = '120e0f4639d30f441d7b6b923e8a073f';
 var api = new HueApi(hostname, username);
 
