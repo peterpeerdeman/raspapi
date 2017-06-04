@@ -1,18 +1,13 @@
 require('dotenv').config();
+
 var express = require('express');
 var app = express();
+var fs = require( 'fs' );
 
-var top = require('./routes/top');
-var mpd = require('./routes/mpd');
-var weather = require('./routes/weather');
-var lights = require('./routes/lights');
-var solar = require('./routes/solar');
-
-app.use('/api/top', top);
-app.use('/api/mpd', mpd);
-app.use('/api/weather', weather);
-app.use('/api/lights', lights);
-app.use('/api/solar', solar);
+routes = fs.readdirSync('./routes');
+routes.forEach( function( routeFile ) {
+    app.use('/api/' + routeFile, require('./routes/' + routeFile));
+});
 
 app.use(error);
 
