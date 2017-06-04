@@ -5,8 +5,8 @@ var q = require('q');
 var HueApi = hue.HueApi;
 var lightState = hue.lightState;
 
-var hostname = '192.168.117.4';
-var username = '120e0f4639d30f441d7b6b923e8a073f';
+var hostname = process.env.LIGHTS_HOST;
+var username = process.env.LIGHTS_USERNAME;
 var api = new HueApi(hostname, username);
 
 router.get('/bridges', function(req, res) {

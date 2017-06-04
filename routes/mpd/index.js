@@ -6,8 +6,8 @@ var cmd = mpd.cmd;
 
 function connect() {
     return mpd.connect({
-        port: 6600,
-        host: 'localhost'
+        host: process.env.MPD_HOST,
+        port: process.env.MPD_PORT,
     });
 }
 

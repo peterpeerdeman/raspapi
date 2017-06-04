@@ -5,8 +5,8 @@ var PVoutputAPI = require('pvoutput-nodejs');
 
 var pvoutput = new PVoutputAPI({
     debug: false,
-    apiKey: 'xxx',
-    systemId: 'xxx'
+    apiKey: process.env.PVOUTPUT_APIKEY,
+    systemId: process.env.PVOUTPUT_SYSTEMID
 });
 
 router.get('/status', function(req, res) {
