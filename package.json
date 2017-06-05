@@ -1,7 +1,7 @@
 {
   "name": "raspapi",
   "version": "1.0.0",
-  "description": "An REST API for our Raspberry Pi",
+  "description": "A REST API for our Raspberry Pi",
   "main": "index.js",
   "directories": {
     "test": "tests"
@@ -9,8 +9,6 @@
   "dependencies": {
     "dotenv": "^4.0.0",
     "express": "^4.12.4",
-    "express-load-routes": "^1.0.1",
-    "kodi-ws": "^2.4.3",
     "lodash": "^4.17.4",
     "mpd": "^1.3.0",
     "node-hue-api": "^2.2.0",
