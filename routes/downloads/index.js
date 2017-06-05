@@ -3,6 +3,7 @@ var router = express.Router();
 
 var Transmission = require('transmission');
 var _ = require('lodash');
+var fs = require('fs');
 
 var transmission = new Transmission({
     host: process.env.TRANSMISSION_HOST,
@@ -42,6 +43,21 @@ router.get('/sessionstats', function(req, res) {
             throw err;
         }
         res.send(data);
+    });
+});
+
+router.get('/folder', function(req, res) {
+    fs.stat(process.env.DOWNLOAD_FOLDER, function(err, stats) {
+        if (stats) {
+            fs.readdir(process.env.DOWNLOAD_FOLDER, function(err, dirs) {
+                if (err) {
+                    throw err;
+                }
+                res.send(dirs);
+            });
+        } else {
+            res.sendStatus(404);
+        }
     });
 });
 
