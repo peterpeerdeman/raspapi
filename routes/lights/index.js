@@ -234,4 +234,27 @@ router.get('/colorloop', function(req, res) {
         })
         .done();
 });
+
+router.get('/scenes', function(req, res) {
+    api.scenes()
+    .then(function(result) {
+        res.send(result);
+    })
+    .fail(function(error) {
+        res.send(error);
+    })
+    .done();
+});
+
+router.get('/scenes/:id/activate', function(req, res) {
+    api.activateScene(req.params.id)
+    .then(function(result) {
+        res.send(result);
+    })
+    .fail(function(error) {
+        res.send(error);
+    })
+    .done();
+});
+
 module.exports = router;
