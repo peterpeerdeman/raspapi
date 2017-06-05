@@ -9,12 +9,11 @@ routes.forEach( function( routeFile ) {
     app.use('/api/' + routeFile, require('./routes/' + routeFile));
 });
 
-app.use(error);
-
 function error(err, req, res, next) {
     console.error(err.stack);
     res.send(500);
 }
+app.use(error);
 
 var server = app.listen(process.env.RASPAPI_PORT, function() {
 
