@@ -7,6 +7,7 @@
     "test": "tests"
   },
   "dependencies": {
+    "basic-auth": "^1.1.0",
     "dotenv": "^4.0.0",
     "express": "^4.12.4",
     "lodash": "^4.17.4",
