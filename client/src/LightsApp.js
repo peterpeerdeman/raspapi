@@ -8,7 +8,20 @@ import {
       ApolloProvider,
 } from 'react-apollo';
 
-const client = new ApolloClient();
+import {
+    makeExecutableSchema,
+    addMockFunctionsToSchema
+} from 'graphql-tools';
+import { mockNetworkInterfaceWithSchema } from 'apollo-test-utils';
+import { typeDefs } from './schema';
+
+const schema = makeExecutableSchema({ typeDefs });
+addMockFunctionsToSchema({ schema });
+const mockNetworkInterface = mockNetworkInterfaceWithSchema({ schema });
+
+const client = new ApolloClient({
+   networkInterface: mockNetworkInterface,
+});
 
 const lightsListQuery = gql`
    query LightListQuery {
@@ -21,23 +34,28 @@ const lightsListQuery = gql`
  `;
 
 const LightsList = ({ data: {loading, error, lights }}) => {
-   if (loading) {
-     return <p>Loading ...</p>;
-   }
-   if (error) {
-     return <p>{error.message}</p>;
-   }
-   return (
-       <List>
-            <ListItem>
-                <ListItemText primary="Light 1" />
+    this.handleToggle = () => {
+        return;
+    }
+    if (loading) {
+        return <p>Loading ...</p>;
+    }
+    if (error) {
+        return <p>{error.message}</p>;
+    }
+    return (
+        <List>
+            { lights.map((light) => {
+            return <ListItem>
+                <ListItemText primary={light.name} />
                 <ListItemSecondaryAction>
                     <Switch
-                        onClick={event => this.handleToggle(event, 'light1')}
-                        checked={false}
+                        onClick={event => this.handleToggle(light.status, light.id)}
+                        checked={light.status}
                     />
                 </ListItemSecondaryAction>
             </ListItem>
+            })}
         </List>
    );
  };
@@ -45,9 +63,6 @@ const LightsList = ({ data: {loading, error, lights }}) => {
 const LightsListWithData = graphql(lightsListQuery)(LightsList);
 
 class LightsApp extends Component {
-    handleToggle() {
-        return;
-    }
     render() {
 
         return (
