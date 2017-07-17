@@ -1,5 +1,12 @@
 require('dotenv').config();
 
+import {
+      graphqlExpress,
+      graphiqlExpress,
+} from 'graphql-server-express';
+import bodyParser from 'body-parser';
+import { schema } from './src/schema';
+
 var express = require('express');
 var app = express();
 var fs = require( 'fs' );
@@ -33,7 +40,12 @@ app.use(function(req, res, next) {
 });
 
 //routes
-routes = fs.readdirSync('./routes');
+app.use('/graphiql', graphiqlExpress({
+    endpointURL: '/graphql'
+}));
+app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
+
+var routes = fs.readdirSync('./routes');
 routes.forEach( function( routeFile ) {
     app.use('/api/' + routeFile, require('./routes/' + routeFile));
 });
