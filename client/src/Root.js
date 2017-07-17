@@ -1,6 +1,4 @@
 import AppBar from 'material-ui/AppBar';
-import Button from 'material-ui/Button';
-import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';
 import IconButton from 'material-ui/IconButton';
 import InboxIcon from 'material-ui-icons/Inbox';
@@ -9,7 +7,6 @@ import MenuIcon from 'material-ui-icons/Menu';
 import React, { Component } from 'react';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
-import { withStyles, createStyleSheet } from 'material-ui/styles';
 import LightsApp from './LightsApp';
 
 class Root extends Component {
