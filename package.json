@@ -19,10 +19,14 @@
     "pvoutput-nodejs": "git+https://github.com/peterpeerdeman/PVoutput-NodeJS.git",
     "q": "^1.4.1",
     "request": "^2.62.0",
-    "thepiratebay": "^1.4.5",
     "topson": "^1.0.0",
     "transmission": "^0.4.9",
-    "valid-url": "^1.0.9"
+    "valid-url": "^1.0.9",
+    "babel-runtime": "^6.23.0",
+    "cheerio": "^0.22.0",
+    "form-data": "^2.1.4",
+    "isomorphic-fetch": "^2.2.1",
+    "url-parse": "^1.1.9"
   },
   "devDependencies": {},
   "scripts": {

@@ -5,7 +5,7 @@ var Transmission = require('transmission');
 var _ = require('lodash');
 var fs = require('fs');
 var validUrl = require('valid-url');
-var thepiratebay = require('thepiratebay');
+var thepiratebay = require('./PirateBay');
 var powercheck = require('powercheck');
 var GoogleSpreadsheet = require('google-spreadsheet');
 
