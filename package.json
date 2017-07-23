@@ -19,7 +19,6 @@
     "pvoutput-nodejs": "git+https://github.com/peterpeerdeman/PVoutput-NodeJS.git",
     "q": "^1.4.1",
     "request": "^2.62.0",
-    "thepiratebay": "^1.4.5",
     "topson": "^1.0.0",
     "transmission": "^0.4.9",
     "valid-url": "^1.0.9"
