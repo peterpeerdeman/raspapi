@@ -4,6 +4,14 @@ var router = express.Router();
 var Transmission = require('transmission');
 var _ = require('lodash');
 var fs = require('fs');
+var validUrl = require('valid-url');
+var thepiratebay = require('thepiratebay');
+var powercheck = require('powercheck');
+var GoogleSpreadsheet = require('google-spreadsheet');
+
+if (process.env.DOWNLOAD_KEYWORDSHEET) {
+    var keywordDoc = new GoogleSpreadsheet(process.env.DOWNLOAD_KEYWORDSHEET);
+}
 
 var transmission = new Transmission({
     host: process.env.TRANSMISSION_HOST,
@@ -58,6 +66,51 @@ router.get('/folder', function(req, res) {
         } else {
             res.sendStatus(404);
         }
+    });
+});
+
+router.get('/keywords', function(req, res) {
+    if (!keywordDoc) {
+        throw new Error('keyworddoc was not defined');
+    }
+
+    keywordDoc.getInfo(function(err, info) {
+        if (err) throw err;
+        var sheet = info.worksheets[0];
+        sheet.getRows({
+            limit: 100
+        }, function(err, rows) {
+            if (err) throw err;
+            var result = rows.map(function(row) {
+                return _.pick(row, ['id','name']);
+            });
+
+            res.send(result);
+        });
+    });
+});
+
+router.post('/search', function(req, res) {
+    powercheck.Throw(req.body.query, String);
+
+    thepiratebay.search(req.body.query, {
+        page: 0,
+        orderBy: 'seeds'
+    })
+    .then(results => res.send(results));
+});
+
+router.post('/add-url', function(req, res) {
+    if (!validUrl.isUri(req.body.url)) {
+        res.sendStatus(400);
+        return;
+    }
+
+    transmission.addUrl(req.body.url, function(err, data) {
+        if (err) {
+            throw err;
+        }
+        res.send(data);
     });
 });
 
