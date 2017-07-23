@@ -4,6 +4,11 @@ var express = require('express');
 var app = express();
 var fs = require( 'fs' );
 var auth = require('basic-auth');
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json({
+    type: '*/*'
+}));
 
 //authorization
 app.use(function(req, res, next) {
