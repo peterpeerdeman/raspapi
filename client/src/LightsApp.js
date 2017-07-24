@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Grid, Typography, List, ListItem, ListItemText, ListItemSecondaryAction, Switch, Paper } from 'material-ui';
 
 import {
-      ApolloClient,
-      gql,
-      graphql,
-      ApolloProvider,
+    ApolloClient,
+    gql,
+    graphql,
+    ApolloProvider,
 } from 'react-apollo';
 
 import {
@@ -20,23 +20,23 @@ addMockFunctionsToSchema({ schema });
 const mockNetworkInterface = mockNetworkInterfaceWithSchema({ schema });
 
 const client = new ApolloClient({
-   networkInterface: mockNetworkInterface,
+    networkInterface: mockNetworkInterface,
 });
 
 const lightsListQuery = gql`
-   query LightListQuery {
-     lights {
-       id
-       name
-       status
-     }
-   }
- `;
+query LightListQuery {
+    lights {
+        id
+        name
+        status
+    }
+}
+`;
 
 const LightsList = ({ data: {loading, error, lights }}) => {
     this.handleToggle = () => {
         return;
-    }
+    };
     if (loading) {
         return <p>Loading ...</p>;
     }
@@ -45,8 +45,8 @@ const LightsList = ({ data: {loading, error, lights }}) => {
     }
     return (
         <List>
-            { lights.map((light) => {
-            return <ListItem>
+            { lights.map((light) =>
+            <ListItem>
                 <ListItemText primary={light.name} />
                 <ListItemSecondaryAction>
                     <Switch
@@ -55,10 +55,10 @@ const LightsList = ({ data: {loading, error, lights }}) => {
                     />
                 </ListItemSecondaryAction>
             </ListItem>
-            })}
+            )}
         </List>
-   );
- };
+        );
+};
 
 const LightsListWithData = graphql(lightsListQuery)(LightsList);
 
@@ -78,7 +78,7 @@ class LightsApp extends Component {
                     </Grid>
                 </Grid>
             </ApolloProvider>
-        );
+            );
     }
 }
 

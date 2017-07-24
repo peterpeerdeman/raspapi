@@ -6,9 +6,9 @@ class App extends Component {
     render() {
         return (
             <MuiThemeProvider>
-            <Root />
+                <Root />
             </MuiThemeProvider>
-        );
+            );
     }
 }
 

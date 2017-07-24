@@ -10,13 +10,17 @@ import Typography from 'material-ui/Typography';
 import LightsApp from './LightsApp';
 
 class Root extends Component {
-    state = {
-        open: false
+    constructor(props) {
+        this.state = {
+            open: false
+        };
+    }
+    handleClose() {
+        this.setState({ open: false });
     };
-
-    handleClose = () => this.setState({ open: false });
-    handleOpen = () => this.setState({ open: true });
-
+    handleOpen() {
+        this.setState({ open: true });
+    };
     render() {
         const listStyle = {
             width: 250,
@@ -54,7 +58,7 @@ class Root extends Component {
                 <LightsApp>
                 </LightsApp>
             </div>
-        );
+            );
     }
 }
 
