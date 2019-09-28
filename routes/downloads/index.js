@@ -8,6 +8,7 @@ var validUrl = require('valid-url');
 var thepiratebay = require('./PirateBay');
 var powercheck = require('powercheck');
 var GoogleSpreadsheet = require('google-spreadsheet');
+var pirateparser = require('./pirateparser');
 
 if (process.env.DOWNLOAD_KEYWORDSHEET) {
     var keywordDoc = new GoogleSpreadsheet(process.env.DOWNLOAD_KEYWORDSHEET);
@@ -92,12 +93,16 @@ router.get('/keywords', function(req, res) {
 
 router.post('/search', function(req, res) {
     powercheck.Throw(req.body.query, String);
+    pirateparser.search(req.body.query, function(list) {
+        res.send(list);
+    });
+});
 
-    thepiratebay.search(req.body.query, {
-        page: 0,
-        orderBy: 'seeds'
-    })
-    .then(results => res.send(results));
+router.post('/getmagnet', function(req, res) {
+    powercheck.Throw(req.body.url, String);
+    pirateparser.getmagnet(req.body.url, function(magnet) {
+        res.send(magnet);
+    });
 });
 
 router.post('/add-url', function(req, res) {
