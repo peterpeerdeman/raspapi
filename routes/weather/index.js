@@ -1,15 +1,29 @@
 var express = require('express');
-var request = require('request');
 var router = express.Router();
+const Influx = require('influxdb-nodejs');
+const influxClient = new Influx('http://127.0.0.1:8086/raspweather-outside');
 
-router.all('/*', function(req, res) {
-    var url = process.env.WEATHER_HOST + req.url;
-    req.pipe(request(url))
-    .on('error', function(e){
-        console.log(e);
-        res.end();
+router.get('/measurements', function(req, res) {
+    let query = influxClient
+    .query('file')
+    .addFunction('mean', 'temperature')
+    .addGroup('time(6h)');
+    query.start = '-7d';
+    query.end = 'now()';
+    query.then((result) => {
+        res.send(result);
     })
-    .pipe(res);
+    .catch(console.error);
+});
+
+router.get('/measurements/last', function(req, res) {
+    influxClient
+    .query('file')
+    .addFunction('last', 'temperature')
+    .then((result) => {
+        res.send(result);
+    })
+    .catch(console.error);
 });
 
 module.exports = router;
