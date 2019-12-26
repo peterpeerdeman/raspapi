@@ -49,6 +49,28 @@ router.get('/lights/:id', function(req, res) {
         .done();
 });
 
+router.get('/groups/:id/on', function(req, res) {
+    api.setGroupLightState(req.params.id, {'on': true})
+        .then(function(result) {
+            res.sendStatus(200);
+        })
+        .fail(function(error) {
+            res.send(error);
+        })
+        .done();
+});
+
+router.get('/groups/:id/off', function(req, res) {
+    api.setGroupLightState(req.params.id, {'on': false})
+        .then(function(result) {
+            res.sendStatus(200);
+        })
+        .fail(function(error) {
+            res.send(error);
+        })
+        .done();
+});
+
 router.get('/lights/:id/on', function(req, res) {
     api.setLightState(req.params.id, {'on': true})
         .then(function(result) {
