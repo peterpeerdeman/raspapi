@@ -25,7 +25,6 @@
     "pvoutput-nodejs": "git+https://github.com/peterpeerdeman/PVoutput-NodeJS.git",
     "q": "^1.5.1",
     "request": "^2.88.0",
-    "topson": "^1.1.0",
     "transmission": "^0.4.9",
     "url-parse": "^1.4.7",
     "valid-url": "^1.0.9"
