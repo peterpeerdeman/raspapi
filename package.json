@@ -27,7 +27,7 @@
     "request": "^2.62.0",
     "topson": "^1.0.0",
     "transmission": "^0.4.9",
-    "url-parse": "^1.1.9",
+    "url-parse": "^1.4.3",
     "valid-url": "^1.0.9"
   },
   "devDependencies": {},
