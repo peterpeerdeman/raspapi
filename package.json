@@ -20,7 +20,7 @@
     "lodash": "^4.17.15",
     "mpd": "^1.3.0",
     "node-hue-api": "^3.4.3",
-    "node-tado-client": "^0.4.0",
+    "node-tado-client": "git+https://github.com/peterpeerdeman/node-tado-client.git",
     "powercheck": "^4.1.3",
     "pvoutput-nodejs": "git+https://github.com/peterpeerdeman/PVoutput-NodeJS.git",
     "q": "^1.5.1",
