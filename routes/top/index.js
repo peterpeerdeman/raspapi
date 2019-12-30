@@ -12,6 +12,7 @@ router.get('/cpu', function(req, res) {
     .addGroup('time(10m)');
     query.start = '-1h';
     query.end = 'now()';
+    query.order = 'desc';
     query.then((result) => {
         res.send(result);
     })
@@ -21,10 +22,17 @@ router.get('/cpu', function(req, res) {
 router.get('/disk', function(req, res) {
     let query = influxClient
     .query('disk')
-    .addFunction('mean', 'used')
+    .addFunction('mean', 'used', {
+            alias: 'used'
+    })
+    .addFunction('mean', 'total', {
+        alias: 'total'
+    })
+    .where('path', '/home', '=')
     .addGroup('time(10m)');
     query.start = '-1h';
     query.end = 'now()';
+    query.order = 'desc';
     query.then((result) => {
         res.send(result);
     })
@@ -43,6 +51,7 @@ router.get('/net', function(req, res) {
     .addGroup('time(10m)');
     query.start = '-1h';
     query.end = 'now()';
+    query.order = 'desc';
     query.then((result) => {
         res.send(result);
     })
