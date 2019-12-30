@@ -57,7 +57,7 @@ router.get('/zones/:zone_id/overlay', function(req, res) {
         res.send(result);
     })
     .catch(err => {
-        res.sendStatus(404);
+        res.sendStatusJson(404);
     });
 });
 
@@ -65,7 +65,7 @@ router.post('/zones/:zone_id/overlay', function(req, res) {
     const wanted_temperature = parseFloat(req.query.temperature);
 
     if (wanted_temperature < 15 || wanted_temperature > 25) {
-        res.sendStatus(400);
+        res.sendStatusJson(400);
         return;
     }
     tado.login(process.env.TADO_USERNAME, process.env.TADO_PASSWORD)
@@ -73,7 +73,7 @@ router.post('/zones/:zone_id/overlay', function(req, res) {
         return tado.setZoneOverlay(process.env.TADO_HOME_ID, parseInt(req.params.zone_id), 'on', wanted_temperature, 'next_time_block');
     })
     .then(result => {
-        res.sendStatus(200);
+        res.sendStatusJson(200);
     })
     .catch(err => console.info(err));
 });
@@ -84,7 +84,7 @@ router.delete('/zones/:zone_id/overlay', function(req, res) {
         return tado.clearZoneOverlay(process.env.TADO_HOME_ID, parseInt(req.params.zone_id));
     })
     .then(result => {
-        res.sendStatus(200);
+        res.sendStatusJson(200);
     })
     .catch(err => console.info(err));
 });
