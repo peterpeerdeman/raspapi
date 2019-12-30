@@ -64,7 +64,7 @@ router.get('/folder', function(req, res) {
                 res.send(dirs);
             });
         } else {
-            res.sendStatus(404);
+            res.sendStatusJson(404);
         }
     });
 });
@@ -106,7 +106,7 @@ router.post('/getmagnet', function(req, res) {
 
 router.post('/add-url', function(req, res) {
     if (!validUrl.isUri(req.body.url)) {
-        res.sendStatus(400);
+        res.sendStatusJson(400);
         return;
     }
 
