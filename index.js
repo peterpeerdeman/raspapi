@@ -47,6 +47,9 @@ app.use(function(err, req, res, next) {
     next(err);
 });
 
+// hide h eaders
+app.disable('x-powered-by');
+
 var server = app.listen(process.env.RASPAPI_PORT, function() {
 
     var host = server.address().address;
