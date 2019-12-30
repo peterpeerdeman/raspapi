@@ -6,6 +6,7 @@ var fs = require( 'fs' );
 var auth = require('basic-auth');
 var bodyParser = require('body-parser');
 
+//parsing
 app.use(bodyParser.json({
     type: '*/*'
 }));
@@ -23,16 +24,28 @@ app.use(function(req, res, next) {
     }
 });
 
+//pretty jsonresponses
+app.use(function(req, res, next) {
+    res.sendStatusJson = function (status) {
+        res.status(status).send({status: status});
+    };
+    next();
+});
+
+//routes
 routes = fs.readdirSync('./routes');
 routes.forEach( function( routeFile ) {
     app.use('/api/' + routeFile, require('./routes/' + routeFile));
 });
 
-function error(err, req, res, next) {
+//errorhandling
+app.use(function(err, req, res, next) {
     console.error(err.stack);
-    res.send(500);
-}
-app.use(error);
+    res.status(500).send({
+        error: "500"
+    });
+    next(err);
+});
 
 var server = app.listen(process.env.RASPAPI_PORT, function() {
 
