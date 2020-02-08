@@ -7,9 +7,10 @@ router.get('/measurements', function(req, res) {
     let query = influxClient
     .query('file')
     .addFunction('mean', 'temperature')
-    .addGroup('time(6h)');
-    query.start = '-7d';
+    .addGroup('time(1h)');
+    query.start = '-1d';
     query.end = 'now()';
+    query.order = 'desc';
     query.then((result) => {
         res.send(result);
     })

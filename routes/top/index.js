@@ -9,8 +9,8 @@ router.get('/cpu', function(req, res) {
     .query('cpu')
     .addFunction('mean', 'usage_user')
     .where('cpu','cpu-total','=')
-    .addGroup('time(10m)');
-    query.start = '-1h';
+    .addGroup('time(1h)');
+    query.start = '-1d';
     query.end = 'now()';
     query.order = 'desc';
     query.then((result) => {
@@ -29,8 +29,8 @@ router.get('/disk', function(req, res) {
         alias: 'total'
     })
     .where('path', '/home', '=')
-    .addGroup('time(10m)');
-    query.start = '-1h';
+    .addGroup('time(1h)');
+    query.start = '-1d';
     query.end = 'now()';
     query.order = 'desc';
     query.then((result) => {
