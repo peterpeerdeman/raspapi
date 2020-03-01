@@ -3,7 +3,7 @@ require('dotenv').config();
 import {
       graphqlExpress,
       graphiqlExpress,
-} from 'graphql-server-express';
+} from 'apollo-server-express';
 import bodyParser from 'body-parser';
 import { schema } from './src/schema';
 
@@ -11,7 +11,6 @@ var express = require('express');
 var app = express();
 var fs = require( 'fs' );
 var auth = require('basic-auth');
-var bodyParser = require('body-parser');
 
 //parsing
 app.use(bodyParser.json({

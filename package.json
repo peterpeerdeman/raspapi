@@ -7,6 +7,7 @@
     "test": "tests"
   },
   "dependencies": {
+    "apollo-server-express": "^2.10.1",
     "babel-runtime": "^6.26.0",
     "basic-auth": "^2.0.1",
     "body-parser": "^1.19.0",
@@ -15,6 +16,8 @@
     "express": "^4.17.1",
     "form-data": "^3.0.0",
     "google-spreadsheet": "^2.0.8",
+    "graphql": "^14.6.0",
+    "graphql-tools": "^4.0.7",
     "influxdb-nodejs": "^3.1.0",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.15",
@@ -43,5 +46,6 @@
   "bugs": {
     "url": "https://github.com/peterpeerdeman/raspapi/issues"
   },
+  "type": "module",
   "homepage": "https://github.com/peterpeerdeman/raspapi"
 }
