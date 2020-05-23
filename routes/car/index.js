@@ -9,7 +9,7 @@ router.get('/charge', function(req, res) {
     .query('charge_state')
     .addFunction('last(battery_level)', {
         alias: "battery_level"
-    })
+    });
     // .addFunction('last(ideal_battery_range)*1.60934', {
     //     alias: "battery_range"
     // });
