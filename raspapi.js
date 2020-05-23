@@ -1,6 +1,12 @@
 require('dotenv').config();
 
-const { ApolloServer, gql } = require('apollo-server');
+const express = require('express');
+const app = express();
+const fs = require( 'fs' );
+const auth = require('basic-auth');
+const bodyParser = require('body-parser');
+
+const { ApolloServer, gql } = require('apollo-server-express');
 
 const typeDefs = gql`
   # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
@@ -14,33 +20,40 @@ const typeDefs = gql`
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
-  type Query {
-    books: [Book]
-  }
+    type Query {
+        books: [Book]
+        hello: String
+    }
 `;
 
 const books = [
-      {
-              title: 'Harry Potter and the Chamber of Secrets',
-              author: 'J.K. Rowling',
-            },
-      {
-              title: 'Jurassic Park',
-              author: 'Michael Crichton',
-            },
+    {
+        title: 'Harry Potter and the Chamber of Secrets',
+        author: 'J.K. Rowling',
+    },
+    {
+        title: 'Jurassic Park',
+        author: 'Michael Crichton',
+    },
 ];
 
 const resolvers = {
     Query: {
-        books: () => books,
+            hello: () => 'world',
+            books: () => books,
     },
 };
 
-var express = require('express');
-var app = express();
-var fs = require( 'fs' );
-var auth = require('basic-auth');
-var bodyParser = require('body-parser');
+
+const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: async ({ req }) => {
+        return {
+            myProperty: true
+        };
+    },
+});
 
 //parsing
 app.use(bodyParser.json({
@@ -48,18 +61,18 @@ app.use(bodyParser.json({
 }));
 
 //authorization
-app.use(function(req, res, next) {
-    var credentials = auth(req);
-    if (!credentials || credentials.name !== process.env.API_USER || credentials.pass !== process.env.API_PASS) {
-        res.set({
-            'WWW-Authenticate': 'Basic realm="simple-admin"'
-        });
-        res.sendStatus(401);
-    } else {
-        next();
-    }
-});
-
+// app.use(function(req, res, next) {
+//     var credentials = auth(req);
+//     if (!credentials || credentials.name !== process.env.API_USER || credentials.pass !== process.env.API_PASS) {
+//         res.set({
+//             'WWW-Authenticate': 'Basic realm="simple-admin"'
+//         });
+//         res.sendStatus(401);
+//     } else {
+//         next();
+//     }
+// });
+//
 //pretty jsonresponses
 app.use(function(req, res, next) {
     res.sendStatusJson = function (status) {
@@ -74,6 +87,9 @@ routes.forEach( function( routeFile ) {
     app.use('/api/' + routeFile, require('./routes/' + routeFile));
 });
 
+//graphql
+server.applyMiddleware({ app });
+
 //errorhandling
 app.use(function(err, req, res, next) {
     console.error(err.stack);
@@ -86,11 +102,8 @@ app.use(function(err, req, res, next) {
 // hide h eaders
 app.disable('x-powered-by');
 
-var server = app.listen(process.env.RASPAPI_PORT, function() {
-
-    var host = server.address().address;
-    var port = server.address().port;
-
-    console.log('raspapi listening at http://%s:%s', host, port);
-
+app.listen({
+    port: process.env.RASPAPI_PORT
+}, () => {
+    console.log(`${new Date().toISOString()} raspapi listening at ${process.env.RASPAPI_PORT}`);
 });
