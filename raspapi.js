@@ -44,7 +44,7 @@ const server = new ApolloServer({
         },
         tabs: [
             {
-                endpoint: 'http://localhost:2999/graphql',
+                endpoint: process.env.API_GRAPHQL,
                 query: 'query {\n  hello\n}',
                 name: 'Raspapi',
                 headers: {
