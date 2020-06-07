@@ -1,10 +1,59 @@
 require('dotenv').config();
 
-var express = require('express');
-var app = express();
-var fs = require( 'fs' );
-var auth = require('basic-auth');
-var bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+const fs = require( 'fs' );
+const auth = require('basic-auth');
+const bodyParser = require('body-parser');
+
+const destiny_resolver = require('./resolvers/destiny.js').default;
+
+const { ApolloServer, gql } = require('apollo-server-express');
+
+const typeDefs = gql`
+    type Query {
+        hello: String
+        destinyPresence: [DestinyPresence]
+    }
+
+    type DestinyPresence {
+        name: String
+        isOnline: Boolean
+        timestamp: String
+    }
+`;
+
+const resolvers = {
+    Query: {
+        hello: () => 'world',
+        destinyPresence: destiny_resolver
+    },
+};
+
+const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: async ({ req }) => {
+        return {
+            myProperty: true
+        };
+    },
+    playground: {
+        settings: {
+            'editor.theme': 'light',
+        },
+        tabs: [
+            {
+                endpoint: 'http://localhost:2999/graphql',
+                query: 'query {\n  hello\n}',
+                name: 'Raspapi',
+                headers: {
+                    'Authorization': `Basic ${new Buffer.from(process.env.API_USER + ":" + process.env.API_PASS, 'utf-8').toString("base64")}`
+                }
+            },
+        ],
+    },
+});
 
 //parsing
 app.use(bodyParser.json({
@@ -38,6 +87,9 @@ routes.forEach( function( routeFile ) {
     app.use('/api/' + routeFile, require('./routes/' + routeFile));
 });
 
+//graphql
+server.applyMiddleware({ app });
+
 //errorhandling
 app.use(function(err, req, res, next) {
     console.error(err.stack);
@@ -50,11 +102,8 @@ app.use(function(err, req, res, next) {
 // hide h eaders
 app.disable('x-powered-by');
 
-var server = app.listen(process.env.RASPAPI_PORT, function() {
-
-    var host = server.address().address;
-    var port = server.address().port;
-
-    console.log('raspapi listening at http://%s:%s', host, port);
-
+app.listen({
+    port: process.env.RASPAPI_PORT
+}, () => {
+    console.log(`${new Date().toISOString()} raspapi listening at ${process.env.RASPAPI_PORT}`);
 });
