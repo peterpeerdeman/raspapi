@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const Influx = require('influxdb-nodejs');
-const influxClient = new Influx('http://127.0.0.1:8086/raspweather-outside');
+const influxClient = new Influx(process.env.INFLUXDB_HOST + 'raspweather-outside');
 
 router.get('/measurements', function(req, res) {
     let query = influxClient

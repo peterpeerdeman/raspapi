@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Influx = require('influxdb-nodejs');
-const influxClient = new Influx('http://127.0.0.1:8086/doorbell');
+const influxClient = new Influx(process.env.INFLUXDB_HOST + 'doorbell');
 
 router.get('/rings', function(req, res) {
     let query = influxClient

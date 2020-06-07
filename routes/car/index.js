@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Influx = require('influxdb-nodejs');
-const influxClient = new Influx('http://127.0.0.1:8086/tesla');
+const influxClient = new Influx(process.env.INFLUXDB_HOST + 'tesla');
 
 router.get('/charge', function(req, res) {
     let query = influxClient

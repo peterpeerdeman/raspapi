@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Influx = require('influxdb-nodejs');
-const influxClient = new Influx('http://127.0.0.1:8086/servers');
+const influxClient = new Influx(process.env.INFLUXDB_HOST + 'servers');
 
 router.get('/cpu', function(req, res) {
     let query = influxClient
