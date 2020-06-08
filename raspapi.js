@@ -7,6 +7,7 @@ const auth = require('basic-auth');
 const bodyParser = require('body-parser');
 
 const destiny = require('./resolvers/destiny.js');
+const car = require('./resolvers/car.js');
 
 const { ApolloServer, gql } = require('apollo-server-express');
 
@@ -14,6 +15,7 @@ const typeDefs = gql`
     type Query {
         hello: String
         destiny: Destiny
+        car: Car
     }
 
     type Destiny {
@@ -23,6 +25,15 @@ const typeDefs = gql`
     type DestinyPresence {
         name: String
         isOnline: Boolean
+        timestamp: String
+    }
+
+    type Car {
+        charge: CarCharge
+    }
+
+    type CarCharge {
+        batteryLevel: Int
         timestamp: String
     }
 `;
@@ -35,6 +46,12 @@ const resolvers = {
                 clanmemberPresence: destiny.clanmemberPresence
             };
         },
+        car: () => {
+            return {
+                charge: car.charge
+            };
+        }
+
     },
 };
 
