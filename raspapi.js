@@ -6,14 +6,18 @@ const fs = require( 'fs' );
 const auth = require('basic-auth');
 const bodyParser = require('body-parser');
 
-const destiny_resolver = require('./resolvers/destiny.js').default;
+const destiny = require('./resolvers/destiny.js');
 
 const { ApolloServer, gql } = require('apollo-server-express');
 
 const typeDefs = gql`
     type Query {
         hello: String
-        destinyPresence: [DestinyPresence]
+        destiny: Destiny
+    }
+
+    type Destiny {
+        clanmemberPresence: [DestinyPresence]
     }
 
     type DestinyPresence {
@@ -26,7 +30,11 @@ const typeDefs = gql`
 const resolvers = {
     Query: {
         hello: () => 'world',
-        destinyPresence: destiny_resolver
+        destiny: () => {
+            return {
+                clanmemberPresence: destiny.clanmemberPresence
+            };
+        },
     },
 };
 
