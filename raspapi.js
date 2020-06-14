@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 
 const destiny = require('./resolvers/destiny.js');
 const car = require('./resolvers/car.js');
+const cluster = require('./resolvers/cluster.js');
 
 const { ApolloServer, gql } = require('apollo-server-express');
 
@@ -16,6 +17,7 @@ const typeDefs = gql`
         hello: String
         destiny: Destiny
         car: Car
+        cluster: Cluster
     }
 
     type Destiny {
@@ -36,6 +38,26 @@ const typeDefs = gql`
         batteryLevel: Int
         timestamp: String
     }
+
+    type Cluster {
+        portTable: [ClusterPort]
+    }
+
+    type ClusterPort {
+        name: String
+        up: Boolean
+        port_poe: Boolean
+        port_idx: Int
+        poe_enable: Boolean
+        poe_power: String
+        poe_current: String
+        poe_voltage: String
+        portconf_id: String
+    }
+
+    type Mutation {
+        cluster_scale(instances: Int!): [ClusterPort]
+    }
 `;
 
 const resolvers = {
@@ -50,9 +72,16 @@ const resolvers = {
             return {
                 charge: car.charge
             };
+        },
+        cluster: () => {
+            return {
+                portTable: cluster.portTable
+            };
         }
-
     },
+    Mutation: {
+        cluster_scale: cluster.cluster_scale
+    }
 };
 
 const server = new ApolloServer({
