@@ -24,7 +24,6 @@ router.post('/webhook', function(req, res) {
   "published_at": "{{{PARTICLE_PUBLISHED_AT}}}"
 }
     */
-    console.log(req.body);
     influxClient.write('ring').field({
         event: req.body.event,
         coreid: req.body.coreid,

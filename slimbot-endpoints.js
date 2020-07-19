@@ -1,14 +1,6 @@
 const downloads = require('./modules/downloads');
 
 module.exports.init = function(slimbot) {
-    // slimbot.setMyCommands({
-    //     commands: [{
-    //         command: 'test',
-    //         description: 'test2'
-    //     }]
-    // }).then((response) => {
-    //     console.log(response);
-    // });
     let authorized_chatids = new Set();
 
     function loggedIn(chatid) {
@@ -20,10 +12,8 @@ module.exports.init = function(slimbot) {
     }
 
     slimbot.on('message', message => {
-        console.log(message);
         if (message.text == '/help') {
             return slimbot.getMyCommands().then(function(response) {
-                console.log(response);
                 return slimbot.sendMessage(message.chat.id, JSON.stringify(response.result));
             });
         }
@@ -33,7 +23,6 @@ module.exports.init = function(slimbot) {
         }
         if (message.text.match(/\/login (\S+:\S+)/)) {
             const matches = message.text.match(/\/login (\S+):(\S+)/);
-            console.log(matches);
             if (matches[1] == process.env.API_USER && matches[2] == process.env.API_PASS) {
                 login(message.chat.id);
                 return slimbot.sendMessage(message.chat.id, 'loggedin');
@@ -58,7 +47,6 @@ module.exports.init = function(slimbot) {
                         url: `https://katcr.to/${current.url}`,
                     }];
                 });
-                console.log(buttons);
                 return slimbot.sendMessage(message.chat.id, reply, {
                     // parse_mode: "html",
                     reply_to_message_id: message.message_id,

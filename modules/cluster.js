@@ -20,7 +20,6 @@ module.exports.getDevice = function(device_id) {
 
 module.exports.getPortTable = function(device_id) {
     return module.exports.getDevice(device_id).then(device => {
-        console.log(device);
         return device.port_table;
     });
 };
