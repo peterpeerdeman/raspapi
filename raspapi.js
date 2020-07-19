@@ -12,6 +12,9 @@ const cluster = require('./resolvers/cluster.js');
 
 const { ApolloServer, gql } = require('apollo-server-express');
 
+const Slimbot = require('slimbot');
+const slimbotEndpoints = require('./slimbot-endpoints.js');
+
 const typeDefs = gql`
     type Query {
         hello: String
@@ -153,9 +156,12 @@ app.use(function(err, req, res, next) {
     next(err);
 });
 
+const slimbot = new Slimbot(process.env['TELEGRAM_BOT_TOKEN']);
+slimbotEndpoints.init(slimbot);
+slimbot.startPolling();
+
 // hide h eaders
 app.disable('x-powered-by');
-
 app.listen({
     port: process.env.RASPAPI_PORT
 }, () => {
