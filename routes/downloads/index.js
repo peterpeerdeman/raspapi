@@ -7,7 +7,7 @@ var fs = require('fs');
 var validUrl = require('valid-url');
 var powercheck = require('powercheck');
 var GoogleSpreadsheet = require('google-spreadsheet');
-var kat = require('./kat');
+var kat = require('../../lib/kat');
 
 if (process.env.DOWNLOAD_KEYWORDSHEET) {
     var keywordDoc = new GoogleSpreadsheet(process.env.DOWNLOAD_KEYWORDSHEET);
