@@ -7,7 +7,7 @@ var fs = require('fs');
 var validUrl = require('valid-url');
 var powercheck = require('powercheck');
 var GoogleSpreadsheet = require('google-spreadsheet');
-var pirateparser = require('./pirateparser');
+var kat = require('./kat');
 
 if (process.env.DOWNLOAD_KEYWORDSHEET) {
     var keywordDoc = new GoogleSpreadsheet(process.env.DOWNLOAD_KEYWORDSHEET);
@@ -90,16 +90,17 @@ router.get('/keywords', function(req, res) {
     });
 });
 
-router.post('/search', function(req, res) {
-    powercheck.Throw(req.body.query, String);
-    pirateparser.search(req.body.query, function(list) {
+router.get('/search/:query', function(req, res) {
+    powercheck.Throw(req.params.query, String);
+    kat.search(req.params.query).then(function(list) {
+        console.log(list);
         res.send(list);
     });
 });
 
 router.post('/getmagnet', function(req, res) {
     powercheck.Throw(req.body.url, String);
-    pirateparser.getmagnet(req.body.url, function(magnet) {
+    kat.getmagnet(req.body.url).then(function(magnet) {
         res.send(magnet);
     });
 });
