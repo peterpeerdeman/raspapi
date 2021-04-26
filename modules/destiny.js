@@ -1,5 +1,5 @@
 const Influx = require('influxdb-nodejs');
-const influxClient = new Influx(process.env.INFLUXDB_HOST + 'destiny');
+const influxClient = new Influx(process.env.INFLUXDB_HOST + 'destiny-pg');
 
 module.exports.getClanmemberPresence = function() {
     let query = influxClient
@@ -10,6 +10,7 @@ module.exports.getClanmemberPresence = function() {
     query.end = 'now()';
     return query.then((result) => {
         const memberSeries = result.results[0].series;
+	if (!memberSeries) return [];
         const presence = memberSeries.map((member) => {
             return {
                 name: member.tags.displayName,
