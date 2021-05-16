@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
-const fs = require( 'fs' );
+const fs = require('fs');
 const auth = require('basic-auth');
 const bodyParser = require('body-parser');
 
@@ -68,23 +68,23 @@ const resolvers = {
         hello: () => 'world',
         destiny: () => {
             return {
-                clanmemberPresence: destiny.clanmemberPresence
+                clanmemberPresence: destiny.clanmemberPresence,
             };
         },
         car: () => {
             return {
-                charge: car.charge
+                charge: car.charge,
             };
         },
         cluster: () => {
             return {
-                portTable: cluster.portTable
+                portTable: cluster.portTable,
             };
-        }
+        },
     },
     Mutation: {
-        cluster_scale: cluster.cluster_scale
-    }
+        cluster_scale: cluster.cluster_scale,
+    },
 };
 
 const server = new ApolloServer({
@@ -92,7 +92,7 @@ const server = new ApolloServer({
     resolvers,
     context: async ({ req }) => {
         return {
-            myProperty: true
+            myProperty: true,
         };
     },
     playground: {
@@ -105,24 +105,33 @@ const server = new ApolloServer({
                 query: 'query {\n  hello\n}',
                 name: 'Raspapi',
                 headers: {
-                    'Authorization': `Basic ${new Buffer.from(process.env.API_USER + ":" + process.env.API_PASS, 'utf-8').toString("base64")}`
-                }
+                    Authorization: `Basic ${new Buffer.from(
+                        process.env.API_USER + ':' + process.env.API_PASS,
+                        'utf-8'
+                    ).toString('base64')}`,
+                },
             },
         ],
     },
 });
 
 //parsing
-app.use(bodyParser.json({
-    type: '*/*'
-}));
+app.use(
+    bodyParser.json({
+        type: '*/*',
+    })
+);
 
 //authorization
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     var credentials = auth(req);
-    if (!credentials || credentials.name !== process.env.API_USER || credentials.pass !== process.env.API_PASS) {
+    if (
+        !credentials ||
+        credentials.name !== process.env.API_USER ||
+        credentials.pass !== process.env.API_PASS
+    ) {
         res.set({
-            'WWW-Authenticate': 'Basic realm="simple-admin"'
+            'WWW-Authenticate': 'Basic realm="simple-admin"',
         });
         res.sendStatus(401);
     } else {
@@ -131,16 +140,16 @@ app.use(function(req, res, next) {
 });
 
 //pretty jsonresponses
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.sendStatusJson = function (status) {
-        res.status(status).send({status: status});
+        res.status(status).send({ status: status });
     };
     next();
 });
 
 //routes
 routes = fs.readdirSync('./routes');
-routes.forEach( function( routeFile ) {
+routes.forEach(function (routeFile) {
     app.use('/api/' + routeFile, require('./routes/' + routeFile));
 });
 
@@ -148,10 +157,10 @@ routes.forEach( function( routeFile ) {
 server.applyMiddleware({ app });
 
 //errorhandling
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     console.error(err.stack);
     res.status(500).send({
-        error: "500"
+        error: '500',
     });
     next(err);
 });
@@ -162,8 +171,15 @@ slimbot.startPolling();
 
 // hide h eaders
 app.disable('x-powered-by');
-app.listen({
-    port: process.env.RASPAPI_PORT
-}, () => {
-    console.log(`${new Date().toISOString()} raspapi listening at ${process.env.RASPAPI_PORT}`);
-});
+app.listen(
+    {
+        port: process.env.RASPAPI_PORT,
+    },
+    () => {
+        console.log(
+            `${new Date().toISOString()} raspapi listening at ${
+                process.env.RASPAPI_PORT
+            }`
+        );
+    }
+);
