@@ -6,7 +6,7 @@ var _ = require('lodash');
 var fs = require('fs');
 var validUrl = require('valid-url');
 var powercheck = require('powercheck');
-var GoogleSpreadsheet = require('google-spreadsheet');
+const { GoogleSpreadsheet } = require('google-spreadsheet');
 var kat = require('../../lib/kat');
 
 if (process.env.DOWNLOAD_KEYWORDSHEET) {
@@ -15,18 +15,23 @@ if (process.env.DOWNLOAD_KEYWORDSHEET) {
 
 var transmission = new Transmission({
     host: process.env.TRANSMISSION_HOST,
-    port: process.env.TRANSMISSION_PORT
+    port: process.env.TRANSMISSION_PORT,
 });
 
 function transformTorrents(torrents) {
-    return torrents.map(function(torrent) {
-        return _.pick(torrent, ['id', 'name', 'status', 'rateDownload', 'rateUpload']);
+    return torrents.map(function (torrent) {
+        return _.pick(torrent, [
+            'id',
+            'name',
+            'status',
+            'rateDownload',
+            'rateUpload',
+        ]);
     });
-};
+}
 
-router.get('/all', function(req, res) {
-
-    transmission.get(function(err, data){
+router.get('/all', function (req, res) {
+    transmission.get(function (err, data) {
         if (err) {
             throw err;
         }
@@ -35,8 +40,8 @@ router.get('/all', function(req, res) {
     });
 });
 
-router.get('/active', function(req, res) {
-    transmission.active(function(err, data){
+router.get('/active', function (req, res) {
+    transmission.active(function (err, data) {
         if (err) {
             throw err;
         }
@@ -45,8 +50,8 @@ router.get('/active', function(req, res) {
     });
 });
 
-router.get('/sessionstats', function(req, res) {
-    transmission.sessionStats(function(err, data) {
+router.get('/sessionstats', function (req, res) {
+    transmission.sessionStats(function (err, data) {
         if (err) {
             throw err;
         }
@@ -54,10 +59,10 @@ router.get('/sessionstats', function(req, res) {
     });
 });
 
-router.get('/folder', function(req, res) {
-    fs.stat(process.env.DOWNLOAD_FOLDER, function(err, stats) {
+router.get('/folder', function (req, res) {
+    fs.stat(process.env.DOWNLOAD_FOLDER, function (err, stats) {
         if (stats) {
-            fs.readdir(process.env.DOWNLOAD_FOLDER, function(err, dirs) {
+            fs.readdir(process.env.DOWNLOAD_FOLDER, function (err, dirs) {
                 if (err) {
                     throw err;
                 }
@@ -69,49 +74,52 @@ router.get('/folder', function(req, res) {
     });
 });
 
-router.get('/keywords', function(req, res) {
+router.get('/keywords', function (req, res) {
     if (!keywordDoc) {
         throw new Error('keyworddoc was not defined');
     }
 
-    keywordDoc.getInfo(function(err, info) {
+    keywordDoc.getInfo(function (err, info) {
         if (err) throw err;
         var sheet = info.worksheets[0];
-        sheet.getRows({
-            limit: 100
-        }, function(err, rows) {
-            if (err) throw err;
-            var result = rows.map(function(row) {
-                return _.pick(row, ['id','name']);
-            });
+        sheet.getRows(
+            {
+                limit: 100,
+            },
+            function (err, rows) {
+                if (err) throw err;
+                var result = rows.map(function (row) {
+                    return _.pick(row, ['id', 'name']);
+                });
 
-            res.send(result);
-        });
+                res.send(result);
+            }
+        );
     });
 });
 
-router.get('/search/:query', function(req, res) {
+router.get('/search/:query', function (req, res) {
     powercheck.Throw(req.params.query, String);
-    kat.search(req.params.query).then(function(list) {
+    kat.search(req.params.query).then(function (list) {
         console.log(list);
         res.send(list);
     });
 });
 
-router.post('/getmagnet', function(req, res) {
+router.post('/getmagnet', function (req, res) {
     powercheck.Throw(req.body.url, String);
-    kat.getmagnet(req.body.url).then(function(magnet) {
+    kat.getmagnet(req.body.url).then(function (magnet) {
         res.send(magnet);
     });
 });
 
-router.post('/add-url', function(req, res) {
+router.post('/add-url', function (req, res) {
     if (!validUrl.isUri(req.body.url)) {
         res.sendStatusJson(400);
         return;
     }
 
-    transmission.addUrl(req.body.url, function(err, data) {
+    transmission.addUrl(req.body.url, function (err, data) {
         if (err) {
             throw err;
         }
