@@ -1,28 +1,27 @@
 var express = require('express');
 var router = express.Router();
-var hue = require('node-hue-api');
+var v3 = require('node-hue-api').v3;
 var q = require('q');
-var HueApi = hue.HueApi;
-var lightState = hue.lightState;
+// var HueApi = hue.HueApi;
+// var lightState = hue.lightState;
 
-var hostname = process.env.LIGHTS_HOST;
-var username = process.env.LIGHTS_USERNAME;
-var api = new HueApi(hostname, username);
-
-router.get('/bridges', function(req, res) {
-    hue.nupnpSearch(function(err, result) {
-        if (err) throw err;
-        res.send(result);
-    });
+const createApi = async () => {
+    return v3.api
+        .createLocal(process.env.LIGHTS_HOST)
+        .connect(process.env.LIGHTS_USERNAME);
+};
+router.get('/bridges', async function (req, res) {
+    const result = await v3.discovery.nupnpSearch();
+    res.send(result);
 });
 
-router.get('/lights', function(req, res) {
-    api.lights(function(err, lights) {
-        if (err) throw err;
-        res.send(lights);
-    });
+router.get('/lights', async function (req, res) {
+    const api = await createApi();
+    const lights = await api.lights.getAll();
+    res.send(lights);
 });
 
+/*
 router.get('/lights/details', function(req, res) {
     api.lights(function(err, result) {
         if (err) throw err;
@@ -128,15 +127,13 @@ router.get('/groups', function(req, res) {
             res.send(result);
         });
 });
-/*
-router.get('/register', function(req, res) {
-    api = new HueApi();
-    api.createUser(hostname, null, null, function(err, user) {
-        if (err) throw err;
-        res.send(user);
-    });
-});
-*/
+// router.get('/register', function(req, res) {
+//     api = new HueApi();
+//     api.createUser(hostname, null, null, function(err, user) {
+//         if (err) throw err;
+//         res.send(user);
+//     });
+// });
 
 router.get('/on', function(req, res) {
     api.setGroupLightState(0, {'on': true}) // provide a value of false to turn off
@@ -264,5 +261,6 @@ router.get('/scenes/:id/activate', function(req, res) {
         res.send(error);
     });
 });
+*/
 
 module.exports = router;
