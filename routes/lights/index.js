@@ -21,6 +21,24 @@ router.get('/lights', async function (req, res) {
     res.send(lights);
 });
 
+router.get('/groups', async function (req, res) {
+    const api = await createApi();
+    const groups = await api.groups.getAll();
+    res.send(groups);
+});
+
+router.get('/groups/:id/on', async function (req, res) {
+    const api = await createApi();
+    const result = await api.groups.setGroupState(req.params.id, { on: true });
+    res.send(result);
+});
+
+router.get('/groups/:id/off', async function (req, res) {
+    const api = await createApi();
+    const result = await api.groups.setGroupState(req.params.id, { on: false });
+    res.send(result);
+});
+
 /*
 router.get('/lights/details', function(req, res) {
     api.lights(function(err, result) {
@@ -44,26 +62,6 @@ router.get('/lights/:id', function(req, res) {
     api.lightStatus(req.params.id)
         .then(function(result) {
             res.send(result);
-        });
-});
-
-router.get('/groups/:id/on', function(req, res) {
-    api.setGroupLightState(req.params.id, {'on': true})
-        .then(function(result) {
-            res.sendStatusJson(200);
-        })
-        .fail(function(error) {
-            res.send(error);
-        });
-});
-
-router.get('/groups/:id/off', function(req, res) {
-    api.setGroupLightState(req.params.id, {'on': false})
-        .then(function(result) {
-            res.sendStatusJson(200);
-        })
-        .fail(function(error) {
-            res.send(error);
         });
 });
 
@@ -121,12 +119,6 @@ router.get('/lights/:id/set', function(req, res) {
         });
 });
 
-router.get('/groups', function(req, res) {
-    api.groups()
-        .then(function(result) {
-            res.send(result);
-        });
-});
 // router.get('/register', function(req, res) {
 //     api = new HueApi();
 //     api.createUser(hostname, null, null, function(err, user) {
