@@ -24,7 +24,12 @@ router.get('/lights', async function (req, res) {
 router.get('/groups', async function (req, res) {
     const api = await createApi();
     const groups = await api.groups.getAll();
-    res.send(groups);
+    const filteredGroups = groups.map((group) => {
+        return {
+            _data: group._data,
+        };
+    });
+    res.send(filteredGroups);
 });
 
 router.get('/groups/:id/on', async function (req, res) {
