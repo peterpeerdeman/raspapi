@@ -111,6 +111,44 @@ const server = new ApolloServer({
                     ).toString('base64')}`,
                 },
             },
+            {
+                endpoint: process.env.API_GRAPHQL,
+
+                query: gql`
+                    mutation {
+                        cluster_scale(instances: 2) {
+                            name
+                        }
+                    }
+                `,
+                name: 'Raspapi cluster mutation unifi',
+                headers: {
+                    Authorization: `Basic ${new Buffer.from(
+                        process.env.API_USER + ':' + process.env.API_PASS,
+                        'utf-8'
+                    ).toString('base64')}`,
+                },
+            },
+            {
+                endpoint: process.env.API_GRAPHQL,
+                query: gql`
+                    query {
+                        cluster {
+                            portTable {
+                                poe_power
+                                poe_enable
+                            }
+                        }
+                    }
+                `,
+                name: 'Raspapi cluster query',
+                headers: {
+                    Authorization: `Basic ${new Buffer.from(
+                        process.env.API_USER + ':' + process.env.API_PASS,
+                        'utf-8'
+                    ).toString('base64')}`,
+                },
+            },
         ],
     },
 });
