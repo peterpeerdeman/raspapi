@@ -79,10 +79,15 @@ const typeDefs = gql`
         pos: Int
         id: Int
     }
+    enum MusicCommand {
+        PLAY
+        PAUSE
+        STOP
+    }
 
     type Mutation {
         cluster_scale(instances: Int!): [ClusterPort]
-        music_control(instances: Int!): Boolean
+        music_control(command: MusicCommand!): Boolean
     }
 `;
 
@@ -112,6 +117,7 @@ const resolvers = {
     },
     Mutation: {
         cluster_scale: cluster.cluster_scale,
+        music_control: music.music_control,
     },
 };
 
