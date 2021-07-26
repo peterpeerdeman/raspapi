@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const destiny = require('./resolvers/destiny.js');
 const car = require('./resolvers/car.js');
 const cluster = require('./resolvers/cluster.js');
+const music = require('./resolvers/music.js');
 
 const { ApolloServer, gql } = require('apollo-server-express');
 
@@ -21,6 +22,7 @@ const typeDefs = gql`
         destiny: Destiny
         car: Car
         cluster: Cluster
+        music: Music
     }
 
     type Destiny {
@@ -58,8 +60,34 @@ const typeDefs = gql`
         portconf_id: String
     }
 
+    type Music {
+        currentSong: CurrentSong
+    }
+    type CurrentSong {
+        name: String
+        file: String
+        last_modified: String
+        artist: String
+        albumartist: String
+        title: String
+        album: String
+        track: Int
+        date: String
+        genre: String
+        time: Int
+        duration: Float
+        pos: Int
+        id: Int
+    }
+    enum MusicCommand {
+        PLAY
+        PAUSE
+        STOP
+    }
+
     type Mutation {
         cluster_scale(instances: Int!): [ClusterPort]
+        music_control(command: MusicCommand!): Boolean
     }
 `;
 
@@ -81,9 +109,15 @@ const resolvers = {
                 portTable: cluster.portTable,
             };
         },
+        music: () => {
+            return {
+                currentSong: music.currentsong,
+            };
+        },
     },
     Mutation: {
         cluster_scale: cluster.cluster_scale,
+        music_control: music.music_control,
     },
 };
 
