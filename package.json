@@ -1,15 +1,15 @@
 {
   "name": "raspapi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A REST API for our Raspberry Pi",
   "main": "index.js",
   "directories": {
     "test": "tests"
   },
   "dependencies": {
-    "apollo-server": "^2.24.0",
-    "apollo-server-express": "^2.24.0",
-    "axios": "^0.21.1",
+    "apollo-server": "^3.6.6",
+    "apollo-server-express": "^3.6.6",
+    "axios": "^0.21.4",
     "babel-runtime": "^6.26.0",
     "basic-auth": "^2.0.1",
     "body-parser": "^1.19.0",
@@ -33,7 +33,7 @@
     "request": "^2.88.0",
     "slimbot": "^4.8.0",
     "transmission": "^0.4.9",
-    "url-parse": "^1.5.1",
+    "url-parse": "^1.5.10",
     "valid-url": "^1.0.9"
   },
   "devDependencies": {},
