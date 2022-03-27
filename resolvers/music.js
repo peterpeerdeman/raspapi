@@ -5,11 +5,6 @@ module.exports.currentsong = async (parent, args, context, info) => {
     return result;
 };
 
-module.exports.command = async (parent, args, context, info) => {
-    const result = await music.getCurrentSong();
-    return result;
-};
-
 module.exports.music_control = async (parent, args, context, info) => {
     switch (args.command) {
         case 'PLAY':
@@ -20,6 +15,12 @@ module.exports.music_control = async (parent, args, context, info) => {
             return true;
         case 'STOP':
             await music.stop();
+            return true;
+        case 'NEXT':
+            await music.next();
+            return true;
+        case 'PREVIOUS':
+            await music.next();
             return true;
         default:
             throw new Error('this command is not supported');

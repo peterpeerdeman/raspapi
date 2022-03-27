@@ -82,6 +82,8 @@ const typeDefs = gql`
     enum MusicCommand {
         PLAY
         PAUSE
+        NEXT
+        PREVIOUS
         STOP
     }
 

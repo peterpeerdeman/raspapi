@@ -23,6 +23,18 @@ module.exports.play = async function () {
     return result;
 };
 
+module.exports.next = async function () {
+    const client = await mpdapi.connect(config);
+    const result = await client.api.playback.next();
+    return result;
+};
+
+module.exports.previous = async function () {
+    const client = await mpdapi.connect(config);
+    const result = await client.api.playback.previous();
+    return result;
+};
+
 module.exports.pause = async function () {
     const client = await mpdapi.connect(config);
     const result = await client.api.playback.pause();
