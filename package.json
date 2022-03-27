@@ -7,7 +7,6 @@
     "test": "tests"
   },
   "dependencies": {
-    "apollo-server": "^3.6.6",
     "apollo-server-express": "^3.6.6",
     "axios": "^0.21.4",
     "babel-runtime": "^6.26.0",
