@@ -17,6 +17,10 @@ A home automation API written in node that aggregates my local network API's suc
 
 copy .env.dist to .env and fill the variables with appropriate values
 
+## build docker image
+
+`docker build -t peterpeerdeman/raspapi:1.0.x  -f Dockerfile .`
+
 ## License
 
 This project is licensed under the terms of the MIT license.
