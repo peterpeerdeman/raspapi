@@ -1,6 +1,6 @@
 {
   "name": "raspapi",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A REST API for our Raspberry Pi",
   "main": "index.js",
   "directories": {
