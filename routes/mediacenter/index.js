@@ -2,83 +2,55 @@ var express = require('express');
 var router = express.Router();
 
 var _ = require('lodash');
-var request = require('request');
+const axios = require('axios');
 
-router.get('/select', function(req, res) {
-    request('http://' + process.env.XBMC_HOST + ':' + process.env.XBMC_PORT + '/jsonrpc?request={"jsonrpc": "2.0", "id": 1, "method": "Input.Select"}', function(err, data) {
-        if (err) {
+const xbmcUrl = `http://${process.env.XBMC_HOST}:${process.env.XBMC_PORT}/jsonrpc`;
+
+const xbmcApiCall = function (method, res) {
+    return axios({
+        method: 'post',
+        url: xbmcUrl,
+        data: { jsonrpc: '2.0', id: 1, method: method },
+    })
+        .then(function (response) {
+            return res.sendStatusJson(200);
+        })
+        .catch(function (err) {
             console.log(err);
-            res.sendStatusJson(500);
-            return;
-        }
-        res.sendStatusJson(200);
-    });
+            return res.sendStatusJson(500);
+        });
+};
+
+router.get('/back', function (req, res) {
+    return xbmcApiCall('Input.Back', res);
 });
 
-router.get('/right', function(req, res) {
-    request('http://' + process.env.XBMC_HOST + ':' + process.env.XBMC_PORT + '/jsonrpc?request={"jsonrpc": "2.0", "id": 1, "method": "Input.Right"}', function(err, data) {
-        if (err) {
-            console.log(err);
-            res.sendStatusJson(500);
-            return;
-        }
-        res.sendStatusJson(200);
-    });
+router.get('/select', function (req, res) {
+    return xbmcApiCall('Input.Select', res);
 });
 
-router.get('/left', function(req, res) {
-    request('http://' + process.env.XBMC_HOST + ':' + process.env.XBMC_PORT + '/jsonrpc?request={"jsonrpc": "2.0", "id": 1, "method": "Input.Left"}', function(err, data) {
-        if (err) {
-            console.log(err);
-            res.sendStatusJson(500);
-            return;
-        }
-        res.sendStatusJson(200);
-    });
+router.get('/right', function (req, res) {
+    return xbmcApiCall('Input.Right', res);
 });
 
-router.get('/down', function(req, res) {
-    request('http://' + process.env.XBMC_HOST + ':' + process.env.XBMC_PORT + '/jsonrpc?request={"jsonrpc": "2.0", "id": 1, "method": "Input.Down"}', function(err, data) {
-        if (err) {
-            console.log(err);
-            res.sendStatusJson(500);
-            return;
-        }
-        res.sendStatusJson(200);
-    });
+router.get('/left', function (req, res) {
+    return xbmcApiCall('Input.Left', res);
 });
 
-router.get('/up', function(req, res) {
-    request('http://' + process.env.XBMC_HOST + ':' + process.env.XBMC_PORT + '/jsonrpc?request={"jsonrpc": "2.0", "id": 1, "method": "Input.Up"}', function(err, data) {
-        if (err) {
-            console.log(err);
-            res.sendStatusJson(500);
-            return;
-        }
-        res.sendStatusJson(200);
-    });
+router.get('/down', function (req, res) {
+    return xbmcApiCall('Input.Down', res);
 });
 
-router.get('/quit', function(req, res) {
-    request('http://' + process.env.XBMC_HOST + ':' + process.env.XBMC_PORT + '/jsonrpc?request={"jsonrpc": "2.0", "id": 1, "method": "Application.Quit"}', function(err, data) {
-        if (err) {
-            console.log(err);
-            res.sendStatusJson(500);
-            return;
-        }
-        res.sendStatusJson(200);
-    });
+router.get('/up', function (req, res) {
+    return xbmcApiCall('Input.Up', res);
 });
 
-router.get('/pause', function(req, res) {
-    request('http://' + process.env.XBMC_HOST + ':' + process.env.XBMC_PORT + '/jsonrpc?request={"jsonrpc": "2.0", "id": 1, "method": "Player.PlayPause", "params": { "playerid": 1 }}', function(err, data) {
-        if (err) {
-            console.log(err);
-            res.sendStatusJson(500);
-            return;
-        }
-        res.sendStatusJson(200);
-    });
+router.get('/quit', function (req, res) {
+    return xbmcApiCall('Application.Quit', res);
+});
+
+router.get('/pause', function (req, res) {
+    return xbmcApiCall('Player.PlayPause', res);
 });
 
 module.exports = router;
