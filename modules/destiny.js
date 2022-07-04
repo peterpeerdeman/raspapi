@@ -10,7 +10,6 @@ module.exports.getClanmemberPresence = function () {
     query.end = 'now()';
     return query.then((result) => {
         const memberSeries = result.results[0].series;
-        console.log(memberSeries);
         if (!memberSeries) return [];
         const presence = memberSeries.map((member) => {
             return {
