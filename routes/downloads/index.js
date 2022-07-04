@@ -101,7 +101,6 @@ router.get('/keywords', function (req, res) {
 router.get('/search/:query', function (req, res) {
     powercheck.Throw(req.params.query, String);
     kat.search(req.params.query).then(function (list) {
-        console.log(list);
         res.send(list);
     });
 });
