@@ -6,123 +6,14 @@ const fs = require('fs');
 const auth = require('basic-auth');
 const bodyParser = require('body-parser');
 
-const destiny = require('./resolvers/destiny.js');
-const car = require('./resolvers/car.js');
-const cluster = require('./resolvers/cluster.js');
-const music = require('./resolvers/music.js');
-
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer } = require('apollo-server-express');
 const { ApolloServerPluginDrainHttpServer } = require('apollo-server-core');
 
 // const Slimbot = require('slimbot');
 // const slimbotEndpoints = require('./slimbot-endpoints.js');
 
-const typeDefs = gql`
-    type Query {
-        hello: String
-        destiny: Destiny
-        car: Car
-        cluster: Cluster
-        music: Music
-    }
-
-    type Destiny {
-        clanmemberPresence: [DestinyPresence]
-    }
-
-    type DestinyPresence {
-        name: String
-        isOnline: Boolean
-        timestamp: String
-    }
-
-    type Car {
-        charge: CarCharge
-    }
-
-    type CarCharge {
-        batteryLevel: Int
-        timestamp: String
-    }
-
-    type Cluster {
-        portTable: [ClusterPort]
-    }
-
-    type ClusterPort {
-        name: String
-        up: Boolean
-        port_poe: Boolean
-        port_idx: Int
-        poe_enable: Boolean
-        poe_power: String
-        poe_current: String
-        poe_voltage: String
-        portconf_id: String
-    }
-
-    type Music {
-        currentSong: CurrentSong
-    }
-    type CurrentSong {
-        name: String
-        file: String
-        last_modified: String
-        artist: String
-        albumartist: String
-        title: String
-        album: String
-        track: Int
-        date: String
-        genre: String
-        time: Int
-        duration: Float
-        pos: Int
-        id: Int
-    }
-    enum MusicCommand {
-        PLAY
-        PAUSE
-        NEXT
-        PREVIOUS
-        STOP
-    }
-
-    type Mutation {
-        cluster_scale(instances: Int!): [ClusterPort]
-        music_control(command: MusicCommand!): Boolean
-    }
-`;
-
-const resolvers = {
-    Query: {
-        hello: () => 'world',
-        destiny: () => {
-            return {
-                clanmemberPresence: destiny.clanmemberPresence,
-            };
-        },
-        car: () => {
-            return {
-                charge: car.charge,
-            };
-        },
-        cluster: () => {
-            return {
-                portTable: cluster.portTable,
-            };
-        },
-        music: () => {
-            return {
-                currentSong: music.currentsong,
-            };
-        },
-    },
-    Mutation: {
-        cluster_scale: cluster.cluster_scale,
-        music_control: music.music_control,
-    },
-};
+const typeDefs = require('./typedefs');
+const resolvers = require('./resolvers');
 
 async function startApolloServer(typeDefs, resolvers) {
     const app = express();

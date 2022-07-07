@@ -1,0 +1,41 @@
+{
+  "results": [
+    {
+      "statement_id": 0,
+      "series": [
+        {
+          "name": "clanmemberstatus",
+          "tags": {
+            "displayName": "Player 1"
+          },
+          "columns": [
+            "time",
+            "last"
+          ],
+          "values": [
+            [
+              "2022-07-07T14:00:07.303848264Z",
+              false
+            ]
+          ]
+        },
+        {
+          "name": "clanmemberstatus",
+          "tags": {
+            "displayName": "Player 2"
+          },
+          "columns": [
+            "time",
+            "last"
+          ],
+          "values": [
+            [
+              "2022-07-07T14:00:07.303517618Z",
+              false
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}
